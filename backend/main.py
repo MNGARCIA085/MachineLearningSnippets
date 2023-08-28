@@ -1,4 +1,4 @@
-#from api.base import api_router
+from api.base import api_router
 from core.config import settings
 from db.base import Base
 from db.session import engine
@@ -21,8 +21,8 @@ def cors(app):
 
 
 
-#def include_router(app):
-#    app.include_router(api_router)
+def include_router(app):
+    app.include_router(api_router)
 
 
 
@@ -33,7 +33,7 @@ def create_tables():
 def start_application():
     app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
     cors(app)
-    #include_router(app)
+    include_router(app)
     #create_tables()
     return app
 
