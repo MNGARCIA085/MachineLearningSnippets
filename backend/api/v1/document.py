@@ -2,7 +2,7 @@ from typing import List
 from db.repository.document import create_new_document,retreive_document,delete_document_by_id,update_document_by_id,list_documents
 from db.session import get_db
 from fastapi import APIRouter, Depends, HTTPException,status
-from schemas.documents import DocumentCreate,DocumentShow,DocumentFilter
+from schemas.documents import DocumentCreate,DocumentShow,DocumentFilter,DocumentShowExtra
 from sqlalchemy.orm import Session
 
 
@@ -30,7 +30,7 @@ def read_document(id: int, db: Session = Depends(get_db)):
     return document
 
 
-@router.get("/",response_model=List[DocumentShow]) 
+@router.get("/",response_model=DocumentShowExtra) #,response_model=List[DocumentShow]---------,response_model=DocumentShowExtra
 def read_documents(f: DocumentFilter = Depends(),db: Session = Depends(get_db)):
     return list_documents(db=db,f=f) 
 

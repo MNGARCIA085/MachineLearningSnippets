@@ -6,7 +6,7 @@ from .common import Pagination
 
 # helper for tags
 class Tag(BaseModel):
-    id: int
+    #id: int
     name: str
 
     class Config:
@@ -35,11 +35,11 @@ class DocumentCreate(DocumentBase):
     tags: List[int] 
 
     # que los tags sean válidos
-    @validator("tags")
-    def validate_tags(cls, value):
+    #@validator("tags")
+    #def validate_tags(cls, value):
         # géneros posibles (db query)
         # si no están los agrego a una lista
-        pass
+        #pass
         #raise ValueError(f"Invalid tags IDs: {invalid_ids}")
         #return value
 
@@ -54,6 +54,22 @@ class DocumentShow(DocumentBase):
     
     class Config:  # to convert non dict obj to json
         orm_mode = True
+
+
+# with extra data
+class DocumentShowExtra(BaseModel):
+    data : List[DocumentShow]
+    count: int
+    limit: int
+    offset: int
+    
+    class Config:  # to convert non dict obj to json
+        orm_mode = True
+
+
+
+
+
 
 # for filtering
 class DocumentFilter(Pagination):

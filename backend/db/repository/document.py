@@ -43,8 +43,49 @@ def list_documents(db: Session,f:DocumentFilter):
     #for a in aux:
     #    for b in a.tag:
     #        print(b.id,b.name)
+    # query
+    docs = db.query(Document).join(Document.tag).filter(filters).limit(f.limit).offset(f.offset).all()
+    # le agrego count, page, limit
+    count = db.query(Document).filter(filters).count()
+    
+    #data = [item.__dict__ for item in docs]
+    #data = [{key: value for key, value in item.items() if key != '_sa_instance_state'} for item in data]
+    
+
+
+
+    data = [
+        {
+            'id':d.id,
+            'title': d.title,
+            'detail': d.detail,
+            'description':d.description,
+            'obs':d.obs,
+            'pandas':d.pandas,
+            'numpy':d.numpy,
+            'scikitlearn':d.scikitlearn,
+            'pyspark':d.pyspark,
+            'keras':d.keras,
+            'tf':d.tf,
+            'pytorch':d.pytorch,
+            'trax':d.trax,
+            'tag': [{'name':t.name} for t in d.tag]
+        }
+        for d in docs
+    ]
+
+
+    
+    
+    
     # respuesta
-    return db.query(Document).join(Document.tag).filter(filters).limit(f.limit).offset(f.offset).all()
+    response = {
+        'data': data,
+        'count': count,
+        'limit':f.limit,
+        'offset':f.offset
+    }
+    return response
 
 
 

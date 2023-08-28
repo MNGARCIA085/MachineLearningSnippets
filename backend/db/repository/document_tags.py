@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 
 def create_document_tags(document_id:int,tags:List[int],db:Session):
+    print(tags)
     for t in tags:
         document_tag_object = DocTag(document_id=document_id,tag_id=t)
         db.add(document_tag_object)
