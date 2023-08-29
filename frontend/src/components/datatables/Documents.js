@@ -7,6 +7,7 @@ import { Table } from 'react-bootstrap';
 import { URL_DOCUMENT_BASE } from '../../api/urls';
 import './MyComponent.css';
 import AdvancedPagination from './AdvancedPagination';
+import DocumentFilterForm from '../forms/DocumentFilter';
 
 
 
@@ -24,13 +25,19 @@ const DocumentsDataTable = () => {
 
 
   // función que recupera los datos 
-  const fetchData = async (limit=10,page=1) => {
+  const fetchData = async (limit=10,page=1,title='') => {
 
 
     const offset = (page -1)*limit;
 
     // obtengo los datos de los posibles filtros
     let query = `?limit=${limit}&offset=${offset}`;
+
+    if (title !== ''){
+      query += `&title__contains=${title}`
+    }
+
+    console.log(query);
     
 
     const response = await axios.get(`${URL_DOCUMENT_BASE}${query}`);
@@ -99,20 +106,53 @@ const DocumentsDataTable = () => {
 
 
 
+  // para mostrar u ocultar el form. de búsqueda
+  const [isFormVisible, setFormVisible] = useState(false);
+  const toggleForm = () => {
+    setFormVisible(!isFormVisible);
+  };
+
+
+
   
   
    
 
   return (
+
+
+   
     
     
     <div class="col-md-8 offset-2">
 
-       
+            <div class="row">
+              <div class="col-md-6 offset-md-0">
+                <a href="#" onClick={toggleForm}>
+                      {isFormVisible ? 'Hide filters' : 'Show filters'}
+                      <br></br><br></br>
+                </a>
+                  {isFormVisible && (
+                      <DocumentFilterForm filterData={fetchData}/>
+                  )}
+                  <br></br>
+                  <hr></hr>
+              </div>
+            </div>
+
+            <br></br>
+
+
+            <Link to="/documents/add" className="btn btn-primary btn-sm">
+                    Add
+            </Link>
+
+            
+            <br></br> <br></br>
+
 
             <div class="row">
                 <div class="col-md-2">
-                    
                 <select onChange={handleSelectChange} class="form-select">
                     <option value={10}>10</option>
                     <option value={15}>15</option>
