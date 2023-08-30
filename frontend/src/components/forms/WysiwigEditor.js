@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { tomorrowNight } from 'react-syntax-highlighter/dist/esm/styles/hljs'; // Elige un estilo de resaltado
 
 import 'react-quill/dist/quill.snow.css';
 
-const WysiwygEditor = ({ onChange }) => {
+const WysiwygEditor = ({ onChange}) => { //, initialValue 
     const [editorHtml, setEditorHtml] = useState('');
+
+    
   
     const handleEditorChange = (content) => {
       setEditorHtml(content);
@@ -30,6 +32,20 @@ const WysiwygEditor = ({ onChange }) => {
       },
       // ...otros módulos
     };
+
+
+    /**
+    useEffect(() => {
+      // Esta función se ejecutará en el inicio del componente
+      console.log('El componente WysiwygEditor se ha montado.');
+      // Realiza las acciones que deseas ejecutar en el inicio aquí
+  
+      // Por ejemplo, puedes cargar contenido inicial
+      console.log(initialValue);
+      const initialContent = initialValue;
+      setEditorHtml(initialContent);
+    }, []);
+    */
 
 
 /**

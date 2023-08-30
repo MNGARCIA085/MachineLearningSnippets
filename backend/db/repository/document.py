@@ -69,7 +69,7 @@ def list_documents(db: Session,f:DocumentFilter):
             'tf':d.tf,
             'pytorch':d.pytorch,
             'trax':d.trax,
-            'tag': [{'name':t.name} for t in d.tag]
+            'tag': [{'name':t.name,'id':t.id} for t in d.tag]
         }
         for d in docs
     ]

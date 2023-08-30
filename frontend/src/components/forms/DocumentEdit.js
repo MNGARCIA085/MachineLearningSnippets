@@ -1,14 +1,40 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import { Form, Button } from 'react-bootstrap';
-import WysiwygEditor from './WysiwigEditor';
 import { consume_service } from '../../api/documents';
 import { URL_DOCUMENT_BASE, URL_TAGS_BASE } from '../../api/urls';
 import Select from 'react-select';
+import ReactQuill from 'react-quill';
 
- const DocumentAddForm = () => {
+
+
+
+ const DocumentEditForm = () => {
+
+  const modules = {
+    toolbar: {
+      container: [
+        [{ font: [] }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ color: [] }, { background: [] }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ indent: '-1' }, { indent: '+1' }],
+        ['link', 'image', 'video'],
+        
+      ],
+    },
+    // ...otros módulos
+  };
+
    
+   let { id } = useParams();
 
 
+  // mensaje
+  const [message,setMessage] = useState('');
+
+   // form data
   const [formData, setFormData] = useState({
       title: '',
       detail:'',
@@ -22,9 +48,8 @@ import Select from 'react-select';
       tf:'',
       pytorch:'',
       trax:'',
-      tags:'',
+      tags:[],
   });
-
 
 
 
@@ -45,15 +70,11 @@ import Select from 'react-select';
 
   // tags
   const handleTags = (data) => {
-    console.log(data);
     setFormData((prevFormData) => ({
       ...prevFormData,
       tags: data
     }));
   };
-
-
-
 
   // Detail
   const handleEditorDetail = (content) => {
@@ -137,10 +158,7 @@ import Select from 'react-select';
 
 
 
-
-  // errores
-  const [titleError, setTitleError] = useState('');
-  const [message, setMessage] = useState('');  
+ 
 
 
 
@@ -157,6 +175,21 @@ import Select from 'react-select';
           }
         };
         fetchOptions();
+
+
+
+        // initial data
+        const fetchData = async () => {
+            try {
+              const response = await consume_service(`${URL_DOCUMENT_BASE}${id}`,'get',{});
+              const data = await response.data;
+              // valores iniciales
+              setFormData({...data,tags:data.tag});
+            } catch (error) {
+              console.error('Error fetching data from API:', error);
+            }
+          };
+          fetchData();
         // fin
       }, []);
   
@@ -170,15 +203,14 @@ import Select from 'react-select';
     try {
         // limpio errores
         //setScoreError('');
-
         // de tags solamente los ids
         const selectedOptions = Array.from(formData.tags, option => option.id);
-
         //
         let aux = {...formData,tags:selectedOptions}; // + tags
-        await consume_service(URL_DOCUMENT_BASE,'post',aux);
-        setMessage('Ingresado');
-
+        //
+        await consume_service(`${URL_DOCUMENT_BASE}${id}`,'put',aux);
+        //
+        setMessage('Registro actualizado');
     } catch (error) {
       console.log(error);
       setMessage('Ocurrieron errores');
@@ -197,7 +229,7 @@ import Select from 'react-select';
             <div class="row">
 
 
-                    ADD DOCUMENT 
+                    EDIT DOCUMENT 
                     <br></br>
                     <hr></hr>
 
@@ -210,26 +242,28 @@ import Select from 'react-select';
                                 value={formData.title}
                                 onChange={handleChange}
                                 />
-                                <small class="text-danger">
-                                    {titleError}
-                                </small> 
+                                
                             </Form.Group>
                             
                             <br></br>
 
-
-                            
-
                             Detail
-                            <WysiwygEditor value={formData.detail} onChange={handleEditorDetail} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.detail}
+                              onChange={handleEditorDetail}
+                            />
                             <br></br>
 
-                            Description
-                            <WysiwygEditor value={formData.description} onChange={handleEditorDescription} />
 
+                          Description
+                          <ReactQuill
+                              modules={modules}
+                              value={formData.description}
+                              onChange={handleEditorDescription}
+                            />
                             <br></br>
-                            
+
                             <div className="form-group">
                                   <label>Géneros:</label>
                                   <Select
@@ -243,71 +277,101 @@ import Select from 'react-select';
                                     data-live-search="true" // Habilitar búsqueda en tiempo real
                                     data-actions-box="true" // Mostrar las opciones seleccionadas en una caja
                                     required
-                                  />
-                                  
-                               
-                        </div>
-
+                                  />       
+                            </div>
                             <br></br>
-                            <br></br>
-
+                            
+                            
                             Obs
-                            <WysiwygEditor value={formData.obs} onChange={handleEditorObs} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.obs}
+                              onChange={handleEditorObs}
+                            />
                             <br></br>
 
                             Pandas
-                            <WysiwygEditor value={formData.pandas} onChange={handleEditorPandas} />
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.pandas}
+                              onChange={handleEditorPandas}
+                            />
+                            <br></br>
 
                             Numpy
-                            <WysiwygEditor value={formData.mumpy} onChange={handleEditorNumpy} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.numpy}
+                              onChange={handleEditorNumpy}
+                            />
                             <br></br>
-                           
-                            PySpark
-                            <WysiwygEditor value={formData.pyspark} onChange={handleEditorPySpark} />
 
+                            PySpark
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.pyspark}
+                              onChange={handleEditorPySpark}
+                            />
                             <br></br>
 
                             ScikitLearn
-                            <WysiwygEditor value={formData.scikitlearn} onChange={handleEditorScikitLearn} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.scikitlearn}
+                              onChange={handleEditorScikitLearn}
+                            />
                             <br></br>
 
                             Keras
-                            <WysiwygEditor value={formData.keras} onChange={handleEditorKeras} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.keras}
+                              onChange={handleEditorKeras}
+                            />
                             <br></br>
 
-                            TF
-                            <WysiwygEditor value={formData.tf} onChange={handleEditorTF} />
-
+                            Tensor Flow
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.tf}
+                              onChange={handleEditorTF}
+                            />
                             <br></br>
 
                             PyTorch
-                            <WysiwygEditor value={formData.pytorch} onChange={handleEditorPyTorch} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.pytorch}
+                              onChange={handleEditorPyTorch}
+                            />
                             <br></br>
 
                             Trax
-                            <WysiwygEditor value={formData.trax} onChange={handleEditorTrax} />
-
+                            <ReactQuill
+                              modules={modules}
+                              value={formData.trax}
+                              onChange={handleEditorTrax}
+                            />
+                            
+                            
                             <br></br>
-
-                        
                             <Button variant="primary" type="submit">
                                 Submit
                             </Button>
+                            <br></br> <br></br>
                     </Form>
 
-                    <br></br>
-                    <br></br>
+                    
+
+
                     {message}
 
+                    
             </div>
 
             <br></br>
-            <br></br>
+                    <br></br>
+                    <br></br>
     </div>
 
 
@@ -318,4 +382,4 @@ import Select from 'react-select';
   );
 };
 
-export default DocumentAddForm;
+export default DocumentEditForm;

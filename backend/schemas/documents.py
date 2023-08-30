@@ -6,7 +6,7 @@ from .common import Pagination
 
 # helper for tags
 class Tag(BaseModel):
-    #id: int
+    id: int
     name: str
 
     class Config:
@@ -19,15 +19,15 @@ class DocumentBase(BaseModel):
     title: str
     description: str
     detail: str
-    obs: Optional[str] 
-    pandas : Optional[str] 
-    numpy : Optional[str] 
-    pyspark: Optional[str] 
-    scikitlearn: Optional[str] 
-    keras: Optional[str] 
-    tf : Optional[str] 
-    pytorch : Optional[str] 
-    trax : Optional[str] 
+    obs: Optional[str] = ''
+    pandas : Optional[str] = '' 
+    numpy : Optional[str] = ''
+    pyspark: Optional[str] = ''
+    scikitlearn: Optional[str] = ''
+    keras: Optional[str] = ''
+    tf : Optional[str] = ''
+    pytorch : Optional[str] = '' 
+    trax : Optional[str] = ''
 
     
 # this will be used to validate data while creating a document

@@ -8,8 +8,8 @@ import { URL_DOCUMENT_BASE } from '../../api/urls';
 import './MyComponent.css';
 import AdvancedPagination from './AdvancedPagination';
 import DocumentFilterForm from '../forms/DocumentFilter';
-
-
+import HTMLFilter from './HTMLFilter';
+import { consume_service } from '../../api/documents';
 
 
 
@@ -26,10 +26,7 @@ const DocumentsDataTable = () => {
 
   // función que recupera los datos 
   const fetchData = async (limit=10,page=1,title='') => {
-
-
     const offset = (page -1)*limit;
-
     // obtengo los datos de los posibles filtros
     let query = `?limit=${limit}&offset=${offset}`;
 
@@ -37,13 +34,9 @@ const DocumentsDataTable = () => {
       query += `&title__contains=${title}`
     }
 
-    console.log(query);
-    
-
     const response = await axios.get(`${URL_DOCUMENT_BASE}${query}`);
     setData(response.data.data);
     //setData(response.data);
-
 
     // cant. de registros
     setCount(response.data.count);
@@ -66,8 +59,7 @@ const DocumentsDataTable = () => {
     const confirmacion = window.confirm("Are you sure?");
           if (confirmacion) {            
             try {
-              //const response = await consume_service(`${URL_USERS_BASE}changestate/${id}`,'patch',
-              //                        '',{},false);
+              await consume_service(`${URL_DOCUMENT_BASE}${id}`,'delete',{});
               // recargo
               fetchData(limit,page);
             } catch (error) {
@@ -84,7 +76,7 @@ const DocumentsDataTable = () => {
 
   //
   const handleEdit = async(id) => {
-    navigate(`/documents/${id}`, { replace: true });
+    navigate(`/documents/edit/${id}`, { replace: true });
   };
 
 
@@ -124,7 +116,7 @@ const DocumentsDataTable = () => {
    
     
     
-    <div class="col-md-8 offset-2">
+    <div class="col-md-10 offset-2">
 
             <div class="row">
               <div class="col-md-6 offset-md-0">
@@ -133,10 +125,8 @@ const DocumentsDataTable = () => {
                       <br></br><br></br>
                 </a>
                   {isFormVisible && (
-                      <DocumentFilterForm filterData={fetchData}/>
+                      <div><DocumentFilterForm filterData={fetchData}/><br></br><hr></hr></div>
                   )}
-                  <br></br>
-                  <hr></hr>
               </div>
             </div>
 
@@ -171,7 +161,7 @@ const DocumentsDataTable = () => {
                 
                             <th>Title</th>
                             <th>Description</th>
-                            <th>Detail</th>
+                            <th>Tags</th>
                             <th><center>Actions</center></th>
                         </tr>
                     </thead>
@@ -184,44 +174,28 @@ const DocumentsDataTable = () => {
                                                                                     
                         <tr>    
                             <td> {row.title}</td>
-                            <td> {row.description}</td>
-                            <td> {row.detail}</td>
-
+                           
+                            <td>
+                                <HTMLFilter htmlContent={row.description} />
+                            </td>
 
                             <td> 
-                                
                                 {row.tag.map((row2) => {
                                     return (<div>{row2.name}&nbsp;</div>)
-                                })}
-                            
-                            
+                                })}                
                             </td>
                            
-
-
-
-
-
                             <td>
-
-
-                            <button class="btn btn-info btn-sm" onClick={() => handleDetail(row.id)}>
-                                        Detail</button>                                        
-                            
-                                        &nbsp; &nbsp;
-                            
-                            <button class="btn btn-warning btn-sm" onClick={() => handleEdit(row.id)}>
-                                        Edit</button>
-                            
-                                        &nbsp; &nbsp; 
-
-                               
-                            <button class="btn btn-danger btn-sm" onClick={() => handleDelete(row.id)}>
-                                    Delete</button>
-                                  
-
-                            
-
+                              <center>
+                                  <button class="btn btn-info btn-sm" onClick={() => handleDetail(row.id)}>
+                                              Detail</button>                                        
+                                              &nbsp; &nbsp;
+                                  <button class="btn btn-warning btn-sm" onClick={() => handleEdit(row.id)}>
+                                              Edit</button>
+                                              &nbsp; &nbsp; 
+                                  <button class="btn btn-danger btn-sm" onClick={() => handleDelete(row.id)}>
+                                          Delete</button>
+                              </center>
                             </td>
                         </tr>
                         );

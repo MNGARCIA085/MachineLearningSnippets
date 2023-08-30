@@ -1,37 +1,25 @@
 import axios from 'axios';
 
 
-export const consume_service = async(url, method, jwtToken, data,auth=false) => {
+export const consume_service = async(url, method, data) => {
 
-   
-        let config = {};
-        if (auth){
-            config = {
-                headers: {
-                Authorization: `Bearer ${jwtToken}` // Agrega "Bearer" antes del JWT
-                }
-            };
-        }
         // diferentes métodos
         if (method==='post'){
             return await axios.post(
                 url,
                 data,
-                config
             )
         }
         else if (method==='put'){
             return await axios.put(
                 url,
                 data,
-                config
             )
         }
         else if (method==='patch'){
             return await axios.patch(
                 url,
                 data,
-                config
             )
         }
         else if (method==='get'){
@@ -40,7 +28,6 @@ export const consume_service = async(url, method, jwtToken, data,auth=false) => 
         else if (method==='delete'){
             return await axios.delete(
                 url,
-                config
             );
         }
 
