@@ -142,6 +142,15 @@ import ReactQuill from 'react-quill';
     }));
   }
 
+
+  const handleEditorTFF = (event) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      tf: event.target.value
+    }));
+  };
+
+
   const handleEditorPyTorch = (content) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -331,11 +340,12 @@ import ReactQuill from 'react-quill';
                             <br></br>
 
                             Tensor Flow
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.tf}
-                              onChange={handleEditorTF}
-                            />
+                            
+
+
+<textarea value={formData.tf}
+                              onChange={handleEditorTFF} rows={4} cols={40} />
+
                             <br></br>
 
                             PyTorch

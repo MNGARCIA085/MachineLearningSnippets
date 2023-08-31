@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Documents from "./pages/Documents";
 import DocumentAddForm from "./components/forms/DocumentAdd";
 import DocumentEditForm from "./components/forms/DocumentEdit";
+import DocumentDetail from "./pages/DocumentDetail";
 
 function App() {
  
@@ -14,6 +15,7 @@ function App() {
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/documents" element={<Documents />} />
+          <Route path="/documents/:id" element={<DocumentDetail />} />
           <Route path="/documents/add" element={<DocumentAddForm />} />
           <Route path="/documents/edit/:id" element={<DocumentEditForm />} />
       </Routes>
