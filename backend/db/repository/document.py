@@ -45,8 +45,9 @@ def list_documents(db: Session,f:DocumentFilter):
     #        print(b.id,b.name)
     # query
     docs = db.query(Document).join(Document.tag).filter(filters).limit(f.limit).offset(f.offset).all()
+    
     # le agrego count, page, limit
-    count = db.query(Document).filter(filters).count()
+    count = db.query(Document).join(Document.tag).filter(filters).count()
     
     #data = [item.__dict__ for item in docs]
     #data = [{key: value for key, value in item.items() if key != '_sa_instance_state'} for item in data]

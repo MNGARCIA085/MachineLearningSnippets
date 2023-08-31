@@ -7,7 +7,7 @@ const Documents = () => {
 
       return (
           <div className="ui container" style={{ marginTop: '10px' }}>
-                <center><h2><font color='red'>DOCUMENTS</font></h2></center>
+                <center><h3><font color='blue'>DOCUMENTS</font></h3></center>
                 <hr></hr>
                 <div class="row">
                     <div class="col-md-10">

@@ -1,0 +1,10 @@
+.textarea-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .textarea-container button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }

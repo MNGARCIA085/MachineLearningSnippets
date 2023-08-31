@@ -25,7 +25,7 @@ const DocumentsDataTable = () => {
 
 
   // función que recupera los datos 
-  const fetchData = async (limit=10,page=1,title='') => {
+  const fetchData = async (limit=10,page=1,title='',tags=[]) => {
     const offset = (page -1)*limit;
     // obtengo los datos de los posibles filtros
     let query = `?limit=${limit}&offset=${offset}`;
@@ -33,6 +33,11 @@ const DocumentsDataTable = () => {
     if (title !== ''){
       query += `&title__contains=${title}`
     }
+
+    tags.forEach(function(value, index) {
+      query += `&tags=${value}`;
+    });
+
 
     const response = await axios.get(`${URL_DOCUMENT_BASE}${query}`);
     setData(response.data.data);

@@ -5,7 +5,7 @@ import { consume_service } from '../../api/documents';
 import { URL_DOCUMENT_BASE, URL_TAGS_BASE } from '../../api/urls';
 import Select from 'react-select';
 import ReactQuill from 'react-quill';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -27,12 +27,14 @@ import ReactQuill from 'react-quill';
     // ...otros módulos
   };
 
+
+  const navigate = useNavigate();
+
    
    let { id } = useParams();
 
 
-  // mensaje
-  const [message,setMessage] = useState('');
+
 
    // form data
   const [formData, setFormData] = useState({
@@ -98,78 +100,7 @@ import ReactQuill from 'react-quill';
     }));
   }
 
-  const handleEditorPandas = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      pandas: content
-    }));
-  }
-
-  const handleEditorNumpy = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      numpy: content
-    }));
-  }
-
-
-  const handleEditorPySpark = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      pyspark: content
-    }));
-  }
-
-
-  const handleEditorScikitLearn = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      scikitlearn: content
-    }));
-  }
-
-  const handleEditorKeras = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      keras: content
-    }));
-  }
-
-  const handleEditorTF = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      tf: content
-    }));
-  }
-
-
-  const handleEditorTFF = (event) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      tf: event.target.value
-    }));
-  };
-
-
-  const handleEditorPyTorch = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      pytorch: content
-    }));
-  }
-
-  const handleEditorTrax = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      trax: content
-    }));
-  }
-
-
-
- 
-
-
+  
 
     // para cargar los valores iniciales
     useEffect(() => {
@@ -219,10 +150,11 @@ import ReactQuill from 'react-quill';
         //
         await consume_service(`${URL_DOCUMENT_BASE}${id}`,'put',aux);
         //
-        setMessage('Registro actualizado');
+        alert('Registro actualizado');
+        navigate('/documents/', { replace: true });
     } catch (error) {
-      console.log(error);
-      setMessage('Ocurrieron errores');
+      alert('Ocurrieron errores');
+      
     };
   };
 
@@ -256,6 +188,14 @@ import ReactQuill from 'react-quill';
                             
                             <br></br>
 
+                            Description
+                          <ReactQuill
+                              modules={modules}
+                              value={formData.description}
+                              onChange={handleEditorDescription}
+                            />
+                            <br></br>
+
                             Detail
                             <ReactQuill
                               modules={modules}
@@ -265,16 +205,10 @@ import ReactQuill from 'react-quill';
                             <br></br>
 
 
-                          Description
-                          <ReactQuill
-                              modules={modules}
-                              value={formData.description}
-                              onChange={handleEditorDescription}
-                            />
-                            <br></br>
+                          
 
                             <div className="form-group">
-                                  <label>Géneros:</label>
+                                  <label>Tags:</label>
                                   <Select
                                     isMulti
                                     options={options}
@@ -300,69 +234,104 @@ import ReactQuill from 'react-quill';
                             <br></br>
 
                             Pandas
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.pandas}
-                              onChange={handleEditorPandas}
-                            />
                             <br></br>
 
-                            Numpy
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.numpy}
-                              onChange={handleEditorNumpy}
-                            />
+                            <textarea
+                                  class="form-control"
+                                  name='pandas'
+                                  value={formData.pandas}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+
                             <br></br>
+                       
+                            Numpy
+                            <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='numpy'
+                                  value={formData.numpy}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
+                            <br></br>
+
+
 
                             PySpark
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.pyspark}
-                              onChange={handleEditorPySpark}
-                            />
                             <br></br>
 
+                            <textarea
+                                  class="form-control"
+                                  name='pyspark'
+                                  value={formData.pyspark}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
+                            <br></br>
+
+
                             ScikitLearn
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.scikitlearn}
-                              onChange={handleEditorScikitLearn}
-                            />
+                            <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='scikitlearn'
+                                  value={formData.scikitlearn}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                             Keras
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.keras}
-                              onChange={handleEditorKeras}
-                            />
+                            <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='keras'
+                                  value={formData.keras}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                             Tensor Flow
-                            
+                            <br></br>
 
+                            <textarea
+                                  class="form-control"
+                                  name='tf'
+                                  value={formData.tf}
+                                  onChange={handleChange} rows={4} cols={40} />
 
-<textarea value={formData.tf}
-                              onChange={handleEditorTFF} rows={4} cols={40} />
-
+              
                             <br></br>
 
                             PyTorch
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.pytorch}
-                              onChange={handleEditorPyTorch}
-                            />
+                            <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='pytorch'
+                                  value={formData.pytorch}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                             Trax
-                            <ReactQuill
-                              modules={modules}
-                              value={formData.trax}
-                              onChange={handleEditorTrax}
-                            />
-                            
+                            <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='trax'
+                                  value={formData.trax}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
+                            <br></br>
+
                             
                             <br></br>
                             <Button variant="primary" type="submit">
@@ -374,7 +343,7 @@ import ReactQuill from 'react-quill';
                     
 
 
-                    {message}
+                  
 
                     
             </div>

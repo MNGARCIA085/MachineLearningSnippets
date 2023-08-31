@@ -7,11 +7,16 @@ import Documents from "./pages/Documents";
 import DocumentAddForm from "./components/forms/DocumentAdd";
 import DocumentEditForm from "./components/forms/DocumentEdit";
 import DocumentDetail from "./pages/DocumentDetail";
+import NavbarStd from "./components/navbars/Navbar";
 
 function App() {
  
   return (
     <Router>
+
+      <NavbarStd/>
+      <br></br>
+
       <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/documents" element={<Documents />} />

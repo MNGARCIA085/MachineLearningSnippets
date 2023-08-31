@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import HTMLFilter from '../components/datatables/HTMLFilter';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import CodeCopyBox from '../components/CodeCopyBox';
 
 
 const DocumentDetail = () => {
@@ -14,9 +15,36 @@ const DocumentDetail = () => {
     // general data
     const [data,setData] = useState('');
 
-
+    const [tags,setTags] = useState([]);
 
     const [aux,setAux] = useState('');
+
+    const [pandas,setPandas] = useState('');
+
+    const [numpy,setNumpy] = useState('');
+
+    const [pyspark,setPySpark] = useState('');
+
+    const [scikitlearn,setScikitLearn] = useState('')
+
+    const [keras,setKeras] = useState('');
+
+    const [tensorflow,setTensorFlow] = useState('');
+
+    const [pytorch,setPyTorch] = useState('');
+
+    const [trax,setTrax] = useState('');
+
+
+
+    // remplazar etiquetas
+    function remplazar(data){
+            return data.replace(/<p>/g, '')    // Eliminar etiquetas <p>
+                    .replace(/<\/p>/g, '')  // Eliminar cierre de etiquetas </p>
+                    .replace(/<br>/g, '\n') // Reemplazar <br> con \n de Python
+                    .trim();
+    }
+
 
 
     // obtengo los datos
@@ -24,16 +52,19 @@ const DocumentDetail = () => {
         const fetchData = async() => {
             const response = await consume_service(`${URL_DOCUMENT_BASE}${id}`,'get',{});
             setData(response.data);
+
+            setTags(response.data.tag);
             
-            //
-            const cleanContent = response.data.tf
-                .replace(/<p>/g, '')    // Eliminar etiquetas <p>
-                .replace(/<\/p>/g, '')  // Eliminar cierre de etiquetas </p>
-                .replace(/<br>/g, '\n') // Reemplazar <br> con \n de Python
-                .trim();                // Eliminar espacios en blanco al principio y al final
+            setPandas(remplazar(response.data.pandas));
+            setNumpy(remplazar(response.data.numpy));
+            setPySpark(remplazar(response.data.pyspark));
+            setScikitLearn(remplazar(response.data.scikitlearn));
+            setKeras(remplazar(response.data.keras));
+            setTensorFlow(remplazar(response.data.tf));
+            setPyTorch(remplazar(response.data.pytorch));
+            setTrax(remplazar(response.data.trax));
 
-
-            setAux(cleanContent);
+            
 
 
         }
@@ -45,42 +76,144 @@ const DocumentDetail = () => {
     return (
   
         <div class="col-md-4 offset-4">
-            <h3><font color='orange'><center>{data.title}</center></font></h3>
+            <h5><font color='blue'><center>{data.title}</center></font></h5>
             <hr></hr>
 
-                <b>Description: </b>  <HTMLFilter htmlContent={data.description} /> <br></br> <br></br>
-                <b>Detail:</b>                 
+                <b>Description </b>  <HTMLFilter htmlContent={data.description} /> 
+                <hr></hr>
+                <b>Detail</b>                 
                         <HTMLFilter htmlContent={data.detail} />
-                        <br></br>
+                        
+
+                <hr></hr>
+                <b>Tags </b> 
+                    {tags.map(item => (
+                            <div class="offset-1">{item.name}</div>
+                    ))}
+                <br></br>
 
 
                 
-                    
+                {
+                    pandas !== '' ?
+                            <div>
+                                <hr></hr>
+                                <b>Pandas </b> 
+                                <CodeCopyBox code={pandas} />
+                            </div>
+                            :
+                            ''
+                }
+
+                
+               
+                {
+                    numpy !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>Numpy </b>
+                                <CodeCopyBox code={numpy} />
+                            </div>
+                            :
+                            ''
+                }
+
+               
+
+
+                {
+                    pyspark !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>PySpark </b>
+                                <CodeCopyBox code={pyspark} />
+
+                            </div>
+                            :
+                            ''
+                }
+
+                
+
+                {
+                    scikitlearn !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>ScikitLearn </b>
+                                <CodeCopyBox code={scikitlearn} />
+                            </div>
+                            :
+                            ''
+                }
+
+                
+
+
+                {
+                    keras !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>Keras </b>
+                                <CodeCopyBox code={keras} />
+                            </div>
+                            :
+                            ''
+                }
+
+                
+
+                {
+                    tensorflow !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>TensorFlow </b>
+                                <CodeCopyBox code={tensorflow} />
+                            </div>
+                            :
+                            ''
+                }
+
+               
+
+
+                {
+                    pytorch !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>PyTorch </b>
+                                <CodeCopyBox code={pytorch} />
+                            </div>
+                            :
+                            ''
+                }
+
+               
+
+                {
+                    trax !== '' ?
+                            <div>
+                                 <hr></hr>
+                                <b>Trax </b>
+                                <CodeCopyBox code={setTrax} />
+                            </div>
+                            :
+                            ''
+                }
+                
+
+
 
                 <br></br>
-                <b>TensorFlow:</b>                 
-                    
-
-                    <br></br> <br></br>
-                    
-
-                        
-                    <SyntaxHighlighter language="python">
-      {aux}
-    </SyntaxHighlighter>
-
+                <hr></hr>
+                <b>Observaciones:</b>                 
+                    <HTMLFilter htmlContent={data.detail} />
                     <br></br>
 
 
-                    <br></br>
-                    <b>PyTorch: </b> 
-                        {
-                            data.pytorch === '' ?
-                                'hacr' :
-                                'Inactive'
-                        }
                 
-                         <br></br> <br></br>
+                    
+
+               
         </div>
     
   );

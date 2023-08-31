@@ -4,10 +4,14 @@ import WysiwygEditor from './WysiwigEditor';
 import { consume_service } from '../../api/documents';
 import { URL_DOCUMENT_BASE, URL_TAGS_BASE } from '../../api/urls';
 import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+
+
 
  const DocumentAddForm = () => {
    
-
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
       title: '',
@@ -77,71 +81,9 @@ import Select from 'react-select';
     }));
   }
 
-  const handleEditorPandas = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      pandas: content
-    }));
-  }
-
-  const handleEditorNumpy = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      numpy: content
-    }));
-  }
-
-
-  const handleEditorPySpark = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      pyspark: content
-    }));
-  }
-
-
-  const handleEditorScikitLearn = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      scikitlearn: content
-    }));
-  }
-
-  const handleEditorKeras = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      keras: content
-    }));
-  }
-
-  const handleEditorTF = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      tf: content
-    }));
-  }
-
-  const handleEditorPyTorch = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      pytorch: content
-    }));
-  }
-
-  const handleEditorTrax = (content) => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      trax: content
-    }));
-  }
-
-
-
 
   // errores
   const [titleError, setTitleError] = useState('');
-  const [message, setMessage] = useState('');  
-
 
 
     // para cargar los valores iniciales
@@ -177,11 +119,14 @@ import Select from 'react-select';
         //
         let aux = {...formData,tags:selectedOptions}; // + tags
         await consume_service(URL_DOCUMENT_BASE,'post',aux);
-        setMessage('Ingresado');
+        //
+        alert('Ingresado');
+        // todo ok, redirect a ver todos los datos
+        navigate('/documents/', { replace: true });
 
     } catch (error) {
       console.log(error);
-      setMessage('Ocurrieron errores');
+      alert('Ocurrieron errores');
     };
   };
 
@@ -218,20 +163,20 @@ import Select from 'react-select';
                             <br></br>
 
 
-                            
+                            Description
+                            <WysiwygEditor value={formData.description} onChange={handleEditorDescription} />
+
+                            <br></br>
 
                             Detail
                             <WysiwygEditor value={formData.detail} onChange={handleEditorDetail} />
 
                             <br></br>
 
-                            Description
-                            <WysiwygEditor value={formData.description} onChange={handleEditorDescription} />
-
-                            <br></br>
+                            
                             
                             <div className="form-group">
-                                  <label>Géneros:</label>
+                                  <label>Tags:</label>
                                   <Select
                                     isMulti
                                     options={options}
@@ -256,42 +201,104 @@ import Select from 'react-select';
 
                             <br></br>
 
+
                             Pandas
-                            <WysiwygEditor value={formData.pandas} onChange={handleEditorPandas} />
+                            <br></br>
 
+                            <textarea
+                                  class="form-control"
+                                  name='pandas'
+                                  value={formData.pandas}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+
+                            <br></br>
+                       
                             Numpy
-                            <WysiwygEditor value={formData.mumpy} onChange={handleEditorNumpy} />
-
                             <br></br>
-                           
+
+                            <textarea
+                                  class="form-control"
+                                  name='numpy'
+                                  value={formData.numpy}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
+                            <br></br>
+
+
+
                             PySpark
-                            <WysiwygEditor value={formData.pyspark} onChange={handleEditorPySpark} />
-
                             <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='pyspark'
+                                  value={formData.pyspark}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
+                            <br></br>
+
 
                             ScikitLearn
-                            <WysiwygEditor value={formData.scikitlearn} onChange={handleEditorScikitLearn} />
+                            <br></br>
 
+                            <textarea
+                                  class="form-control"
+                                  name='scikitlearn'
+                                  value={formData.scikitlearn}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                             Keras
-                            <WysiwygEditor value={formData.keras} onChange={handleEditorKeras} />
-
                             <br></br>
 
-                            TF
-                            <WysiwygEditor value={formData.tf} onChange={handleEditorTF} />
+                            <textarea
+                                  class="form-control"
+                                  name='keras'
+                                  value={formData.keras}
+                                  onChange={handleChange} rows={4} cols={40} />
 
+              
+                            <br></br>
+
+                            Tensor Flow
+                            <br></br>
+
+                            <textarea
+                                  class="form-control"
+                                  name='tf'
+                                  value={formData.tf}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                             PyTorch
-                            <WysiwygEditor value={formData.pytorch} onChange={handleEditorPyTorch} />
+                            <br></br>
 
+                            <textarea
+                                  class="form-control"
+                                  name='pytorch'
+                                  value={formData.pytorch}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                             Trax
-                            <WysiwygEditor value={formData.trax} onChange={handleEditorTrax} />
+                            <br></br>
 
+                            <textarea
+                                  class="form-control"
+                                  name='trax'
+                                  value={formData.trax}
+                                  onChange={handleChange} rows={4} cols={40} />
+
+              
                             <br></br>
 
                         
@@ -301,8 +308,7 @@ import Select from 'react-select';
                     </Form>
 
                     <br></br>
-                    <br></br>
-                    {message}
+                    
 
             </div>
 
