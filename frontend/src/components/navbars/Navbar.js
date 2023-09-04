@@ -32,7 +32,7 @@ const NavbarStd = () => {
                                 <NavLink to="/documents/" className="nav-link">
                                     Snippets
                                 </NavLink>
-                                <NavLink to="/users/changepassword" className="nav-link">
+                                <NavLink to="/tags/" className="nav-link">
                                     Tags
                                 </NavLink>                               
                             </Dropdown.Menu>

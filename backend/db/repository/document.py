@@ -53,8 +53,6 @@ def list_documents(db: Session,f:DocumentFilter):
     #data = [{key: value for key, value in item.items() if key != '_sa_instance_state'} for item in data]
     
 
-
-
     data = [
         {
             'id':d.id,
@@ -76,9 +74,7 @@ def list_documents(db: Session,f:DocumentFilter):
     ]
 
 
-    
-    
-    
+
     # respuesta
     response = {
         'data': data,
